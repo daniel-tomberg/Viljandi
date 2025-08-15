@@ -24,8 +24,6 @@ dist/
 *.ear
 *.log
 target/
-!target/classes/
-!target/test-classes/
 
 # IDE
 .idea/
