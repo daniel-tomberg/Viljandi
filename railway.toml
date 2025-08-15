@@ -1,2 +1,5 @@
+[build]
+builder = "nixpacks"
+
 [deploy]
 startCommand = "java -jar target/customer-order-portal-0.0.1-SNAPSHOT.jar"

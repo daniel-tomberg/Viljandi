@@ -1,10 +1,12 @@
-# Java version
+# Java project configuration
 providers = ["java"]
 
-# Build command
+# Set the working directory to backend
+[phases.setup]
+cmds = ["cd backend"]
+
 [phases.install]
 cmds = ["cd backend && mvn clean package -DskipTests"]
 
-# Start command
 [start]
 cmd = "cd backend && java -jar target/customer-order-portal-0.0.1-SNAPSHOT.jar"
