@@ -37,8 +37,8 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex">
-      <div className="hidden lg:flex lg:w-2/5 bg-gradient-to-br from-emerald-50 to-teal-100 items-center justify-center p-12">
+    <div className="min-h-screen flex flex-col lg:flex-row">
+      <div className="hidden lg:flex lg:w-2/5 bg-gradient-to-br from-emerald-50 to-teal-100 items-center justify-center p-8 lg:p-12">
         <div className="text-center max-w-md">
           <div className="bg-white rounded-lg p-6 shadow-sm border border-emerald-200">
             <h3 className="text-lg font-semibold text-emerald-800 mb-4">
@@ -58,17 +58,19 @@ export default function LoginForm() {
         </div>
       </div>
 
-      <div className="flex-1 flex items-center justify-center bg-white p-8">
+      <div className="flex-1 flex items-center justify-center bg-white p-4 sm:p-6 lg:p-8">
         <div className="w-full max-w-md">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               Viljandi Windows & Doors
             </h2>
-            <p className="text-gray-600">Welcome to Customer Order Portal</p>
+            <p className="text-sm sm:text-base text-gray-600">
+              Welcome to Customer Order Portal
+            </p>
           </div>
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className="space-y-4">
+          <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
+            <div className="space-y-3 sm:space-y-4">
               <div>
                 <label
                   htmlFor="username"
@@ -81,7 +83,7 @@ export default function LoginForm() {
                   name="username"
                   type="text"
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors text-base"
                   placeholder="Enter your username or client ID"
                   value={credentials.username}
                   onChange={(e) =>
@@ -102,7 +104,7 @@ export default function LoginForm() {
                   name="password"
                   type="password"
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors text-base"
                   placeholder="Enter your password"
                   value={credentials.password}
                   onChange={(e) =>
@@ -121,14 +123,14 @@ export default function LoginForm() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gray-900 text-white py-3 px-4 rounded-lg font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gray-900 text-white py-2.5 sm:py-3 px-4 rounded-lg font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-base"
             >
               {loading ? "Signing in..." : "Sign in"}
             </button>
           </form>
 
-          <div className="mt-8 text-center">
-            <p className="text-sm text-gray-500">
+          <div className="mt-6 sm:mt-8 text-center">
+            <p className="text-xs sm:text-sm text-gray-500">
               Secure access to your order management portal
             </p>
           </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Order, OrderLine, ordersAPI } from "@/lib/api";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import FilterInput from "./FilterInput";
@@ -94,11 +94,11 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
   return (
     <>
       <div className="mb-4">
-        <h2 className="text-xl font-semibold text-gray-800 mb-1">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-1">
           Orders & Delivery Info
         </h2>
-        <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-600">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
+          <span className="text-xs sm:text-sm text-gray-600">
             Number of Orders: {filteredOrders.length}
           </span>
           {(filters.poNumber ||
@@ -115,7 +115,7 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
                 });
                 setFilteredOrders(orders);
               }}
-              className="text-sm text-blue-600 hover:text-blue-800 underline"
+              className="text-xs sm:text-sm text-blue-600 hover:text-blue-800 underline self-start sm:self-auto"
             >
               Clear Filters
             </button>
@@ -123,8 +123,31 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
         </div>
       </div>
 
+      <div className="block sm:hidden mb-4 space-y-2">
+        <FilterInput
+          placeholder="Filter PO Number..."
+          value={filters.poNumber}
+          onChange={(value) => handleFilterChange("poNumber", value)}
+        />
+        <FilterInput
+          placeholder="Filter Order Date..."
+          value={filters.orderDate}
+          onChange={(value) => handleFilterChange("orderDate", value)}
+        />
+        <FilterInput
+          placeholder="Filter Expected Delivery..."
+          value={filters.expectedDelivery}
+          onChange={(value) => handleFilterChange("expectedDelivery", value)}
+        />
+        <FilterInput
+          placeholder="Filter Status..."
+          value={filters.status}
+          onChange={(value) => handleFilterChange("status", value)}
+        />
+      </div>
+
       <div className="bg-gray-100 rounded-lg p-0">
-        <div className="overflow-x-auto">
+        <div className="hidden sm:block overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr>
@@ -178,9 +201,8 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
             </thead>
             <tbody>
               {filteredOrders.map((order) => (
-                <>
+                <React.Fragment key={order.id}>
                   <tr
-                    key={order.id}
                     className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer bg-white"
                     onClick={() => handleOrderClick(order.poNumber)}
                   >
@@ -291,10 +313,129 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
                       </td>
                     </tr>
                   )}
-                </>
+                </React.Fragment>
               ))}
             </tbody>
           </table>
+        </div>
+
+        <div className="block sm:hidden space-y-3 p-3">
+          {filteredOrders.map((order) => (
+            <div
+              key={order.id}
+              className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+            >
+              <div
+                className="p-3 cursor-pointer hover:bg-gray-50 transition-colors"
+                onClick={() => handleOrderClick(order.poNumber)}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    {expandedOrder === order.poNumber ? (
+                      <ChevronDown size={16} className="text-gray-500" />
+                    ) : (
+                      <ChevronRight size={16} className="text-gray-500" />
+                    )}
+                    <span className="font-medium text-blue-600 text-sm">
+                      {order.poNumber}
+                    </span>
+                  </div>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                      order.status
+                    )}`}
+                  >
+                    {order.status}
+                  </span>
+                </div>
+                <div className="space-y-1 text-xs text-gray-600">
+                  <div className="flex justify-between">
+                    <span>Order Date:</span>
+                    <span className="text-gray-900">{order.orderDate}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Expected Delivery:</span>
+                    <span className="text-gray-900">
+                      {order.expectedDelivery}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {expandedOrder === order.poNumber && (
+                <div className="border-t border-gray-100 bg-gray-50">
+                  {loading ? (
+                    <div className="text-center py-4 text-sm text-gray-500">
+                      Loading order lines...
+                    </div>
+                  ) : orderLines.length === 0 ? (
+                    <div className="text-center py-4 text-sm text-gray-500">
+                      No data loaded.
+                    </div>
+                  ) : (
+                    <div className="p-3 space-y-3">
+                      <h4 className="font-medium text-gray-800 text-sm mb-2">
+                        Order Lines
+                      </h4>
+                      {orderLines.map((line, index) => (
+                        <div
+                          key={line.id}
+                          className="bg-white rounded border border-gray-200 p-3"
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="inline-flex items-center justify-center w-6 h-6 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">
+                              {index + 1}
+                            </span>
+                            <span className="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                              Qty: {line.qty.toFixed(2)}
+                            </span>
+                          </div>
+                          <div className="space-y-1 text-xs">
+                            <div className="flex justify-between">
+                              <span className="text-gray-600">Order #:</span>
+                              <span className="text-gray-900 font-mono">
+                                {line.orderNum}
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gray-600">
+                                Product Code:
+                              </span>
+                              <span className="text-gray-900 font-mono">
+                                {line.productCode}
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gray-600">EAN Code:</span>
+                              <span className="text-gray-900 font-mono">
+                                {line.eanCode}
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gray-600">
+                                Delivery Date:
+                              </span>
+                              <span className="text-gray-900">
+                                {line.deliveryDate}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="mt-2">
+                            <span className="text-gray-600 text-xs">
+                              Product:
+                            </span>
+                            <p className="text-gray-900 text-xs mt-1">
+                              {line.productName}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </>
