@@ -21,11 +21,11 @@ Your frontend is already deployed at: **https://frontend-ed8t102do-danieltomberg
 2. **Create project**: Click "New Project" → "Deploy from GitHub repo"
 3. **Select repository**: Choose your GitHub repository
 4. **Configure deployment**:
-   - Set the **Root Directory** to `backend`
-   - Set the **Build Command** to `./mvnw clean package -DskipTests`
-   - Set the **Start Command** to `java -jar target/customer-order-portal-0.0.1-SNAPSHOT.jar`
+   - **Root Directory**: Leave as `/` (root directory)
+   - **Build Command**: `cd backend && ./mvnw clean package -DskipTests`
+   - **Start Command**: `cd backend && java -jar target/customer-order-portal-0.0.1-SNAPSHOT.jar`
 5. **Environment Variables**: Add any necessary environment variables
-6. **Deploy**: Railway will automatically build and deploy your application
+6. **Deploy**: Railway will automatically build and deploy your application using the `railway.toml` configuration
 
 ### Option 2: Render
 
